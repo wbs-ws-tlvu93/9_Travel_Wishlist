@@ -1,9 +1,10 @@
 import { Request, RequestHandler, Response, Router } from "express"
 import { StatusCodes } from "http-status-codes"
 
-import Country, { ICountry } from "@models/country-model"
+import Country, { countrySchemaJOI, ICountry } from "@models/country-model"
 import countryService from "@services/country-service"
 import { ParamMissingError } from "@shared/errors"
+import validateJOI from "@shared/validateJOI"
 
 // constants
 const router = Router();
@@ -19,7 +20,7 @@ export const p = {
 } as const;
 
 /**
- * Get all users.
+ * Get all countries.
  */
 router.get(p.get, (async (_: Request, res: Response) => {
   const countries = await countryService.getAll();
@@ -27,7 +28,7 @@ router.get(p.get, (async (_: Request, res: Response) => {
 }) as RequestHandler);
 
 /**
- * Get one user.
+ * Get one country.
  */
 router.get(p.getCode, (async (req: Request, res: Response) => {
   const { code } = req.params;
@@ -40,28 +41,26 @@ router.get(p.getCode, (async (req: Request, res: Response) => {
 }) as RequestHandler);
 
 /**
- * Add one user
+ * Add one country
  */
-router.post(p.post, (async (req: Request, res: Response) => {
-  const { country }: { country: ICountry } = req.body;
+router.post(p.post, validateJOI(countrySchemaJOI), (async (
+  req: Request,
+  res: Response
+) => {
+  const country: ICountry = req.body;
+
   // Check params
-  if (!country) {
+  if (!country.name || !country.alpha2Code || !country.alpha3Code) {
     throw new ParamMissingError();
   }
-  // Fetch data
-  const newCountry = Country.new(
-    country.name,
-    country.alpha2Code,
-    country.alpha3Code
-  );
 
-  await countryService.addOne(newCountry);
+  await countryService.addOne(country);
 
   return res.status(CREATED).end();
 }) as RequestHandler);
 
 /**
- * Update one user
+ * Update one country
  */
 router.put(p.update, (async (req: Request, res: Response) => {
   const { country }: { country: ICountry } = req.body;

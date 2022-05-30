@@ -1,3 +1,4 @@
+import Joi from "joi"
 import mongoose, { Schema } from "mongoose"
 
 // Country schema
@@ -7,6 +8,7 @@ export interface ICountry {
   alpha3Code: string;
 }
 
+// Mongoose Schema
 const countrySchema = new Schema<ICountry>({
   name: {
     type: String,
@@ -22,7 +24,15 @@ const countrySchema = new Schema<ICountry>({
   },
 });
 
+// Mongoose Model
 export const Country = mongoose.model<ICountry>('Country', countrySchema);
+
+// JOI Schema
+export const countrySchemaJOI = Joi.object({
+  name: Joi.string().required(),
+  alpha2Code: Joi.string().required(),
+  alpha3Code: Joi.string().required(),
+});
 
 /**
  * Get a new Country object.
