@@ -1,3 +1,5 @@
+import mongoose, { Schema } from "mongoose"
+
 // Country schema
 export interface ICountry {
   id: number;
@@ -5,6 +7,15 @@ export interface ICountry {
   alpha2Code: string;
   alpha3Code: string;
 }
+
+const countrySchema = new Schema<ICountry>({
+  id: { type: Number, required: true },
+  name: { type: String, required: true },
+  alpha2Code: { type: String, required: true },
+  alpha3Code: { type: String, required: true },
+});
+
+export const Country = mongoose.model<ICountry>('Country', countrySchema);
 
 /**
  * Get a new Country object.
@@ -43,4 +54,5 @@ function copy(country: ICountry): ICountry {
 export default {
   new: getNew,
   copy,
+  Country,
 };

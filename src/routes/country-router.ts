@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response, Router } from "express"
 import { StatusCodes } from "http-status-codes"
 
-import userService from "@services/user-service"
+import countryService from "@services/country-service"
 import { ParamMissingError } from "@shared/errors"
 
 // constants
@@ -21,7 +21,8 @@ export const p = {
  * Get all users.
  */
 router.get(p.get, (async (_: Request, res: Response) => {
-  //TODO: adjust code
-  const users = await userService.getAll();
-  return res.status(OK).json({ users });
+  const countries = await countryService.getAll();
+  return res.status(OK).json({ countries });
 }) as RequestHandler);
+
+export default router;
