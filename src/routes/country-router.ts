@@ -59,4 +59,15 @@ router.post(p.post, (async (req: Request, res: Response) => {
   return res.status(CREATED).end();
 }) as RequestHandler);
 
+router.delete(p.delete, (async (req: Request, res: Response) => {
+  const { code } = req.params;
+
+  if (!code) {
+    throw new ParamMissingError();
+  }
+
+  const country = await countryService.delete(code);
+  return res.status(OK).json({ country });
+}) as RequestHandler);
+
 export default router;

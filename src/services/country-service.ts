@@ -40,19 +40,15 @@ async function updateOne(user: ICountry): Promise<void> {
   return countryRepo.update(user);
 }
 
-// /**
-//  * Delete a user by their id.
-//  *
-//  * @param id
-//  * @returns
-//  */
-// async function deleteOne(id: number): Promise<void> {
-//   const persists = await userRepo.persists(id);
-//   if (!persists) {
-//     throw new UserNotFoundError();
-//   }
-//   return userRepo.delete(id);
-// }
+/**
+ * Delete a user by their code.
+ *
+ * @param id
+ * @returns
+ */
+async function deleteOne(code: string): Promise<void> {
+  return countryRepo.delete(code);
+}
 
 // Export default
 export default {
@@ -60,5 +56,5 @@ export default {
   getOne,
   addOne,
   updateOne,
-  // delete: deleteOne,
+  delete: deleteOne,
 } as const;

@@ -61,21 +61,17 @@ async function update(country: ICountry): Promise<void> {
   await Country.findOneAndUpdate(country);
 }
 
-// /**
-//  * Delete one country.
-//  *
-//  * @param id
-//  * @returns
-//  */
-// async function deleteOne(id: number): Promise<void> {
-//   const db = await orm.openDb();
-//   for (let i = 0; i < db.countries.length; i++) {
-//     if (db.countries[i].id === id) {
-//       db.countries.splice(i, 1);
-//       return orm.saveDb(db);
-//     }
-//   }
-// }
+/**
+ * Delete one country.
+ *
+ * @param id
+ * @returns
+ */
+async function deleteOne(code: string): Promise<void> {
+  await Country.deleteOne({
+    $or: [{ alpha2Code: code }, { alpha3Code: code }],
+  });
+}
 
 // Export default
 export default {
@@ -84,5 +80,5 @@ export default {
   getAll,
   add,
   update,
-  // delete: deleteOne,
+  delete: deleteOne,
 } as const;
