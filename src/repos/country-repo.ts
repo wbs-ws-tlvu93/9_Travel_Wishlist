@@ -58,13 +58,19 @@ async function add(country: ICountry): Promise<void> {
  * @returns
  */
 async function update(country: ICountry): Promise<void> {
-  await Country.findOneAndUpdate(country);
+  const filter = {
+    $or: [
+      { alpha2Code: country.alpha2Code },
+      { alpha3Code: country.alpha3Code },
+    ],
+  };
+  await Country.findOneAndUpdate(filter, country);
 }
 
 /**
  * Delete one country.
  *
- * @param id
+ * @param code
  * @returns
  */
 async function deleteOne(code: string): Promise<void> {

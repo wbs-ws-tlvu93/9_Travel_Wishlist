@@ -14,7 +14,7 @@ export const p = {
   get: '/',
   getCode: '/:code',
   post: '/',
-  put: '/:code',
+  update: '/:code',
   delete: '/:code',
 } as const;
 
@@ -31,7 +31,7 @@ router.get(p.get, (async (_: Request, res: Response) => {
  */
 router.get(p.getCode, (async (req: Request, res: Response) => {
   const { code } = req.params;
-
+  // Check params
   if (!code) {
     throw new ParamMissingError();
   }
@@ -44,6 +44,7 @@ router.get(p.getCode, (async (req: Request, res: Response) => {
  */
 router.post(p.post, (async (req: Request, res: Response) => {
   const { country }: { country: ICountry } = req.body;
+  // Check params
   if (!country) {
     throw new ParamMissingError();
   }
@@ -59,9 +60,29 @@ router.post(p.post, (async (req: Request, res: Response) => {
   return res.status(CREATED).end();
 }) as RequestHandler);
 
+/**
+ * Update one user
+ */
+router.put(p.update, (async (req: Request, res: Response) => {
+  const { country }: { country: ICountry } = req.body;
+
+  // Check params
+  if (!country) {
+    throw new ParamMissingError();
+  }
+
+  // Update data
+  await countryService.updateOne(country);
+
+  return res.status(CREATED).end();
+}) as RequestHandler);
+
+/**
+ * Delete one country by their country code
+ */
 router.delete(p.delete, (async (req: Request, res: Response) => {
   const { code } = req.params;
-
+  // Check params
   if (!code) {
     throw new ParamMissingError();
   }

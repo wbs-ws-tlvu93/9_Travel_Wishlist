@@ -1,9 +1,8 @@
 import { ICountry } from "@models/country-model"
 import countryRepo from "@repos/country-repo"
-import { UserNotFoundError } from "@shared/errors"
 
 /**
- * Get all users.
+ * Get all countriess.
  *
  * @returns
  */
@@ -12,7 +11,7 @@ function getAll(): Promise<ICountry[]> {
 }
 
 /**
- * Get one user by id.
+ * Get one country by id.
  *
  * @returns
  */
@@ -21,9 +20,9 @@ function getOne(code: string): Promise<ICountry | null> {
 }
 
 /**
- * Add one user.
+ * Add one country.
  *
- * @param user
+ * @param country
  * @returns
  */
 function addOne(country: ICountry): Promise<void> {
@@ -31,19 +30,19 @@ function addOne(country: ICountry): Promise<void> {
 }
 
 /**
- * Update one user.
+ * Update one country.
  *
- * @param user
+ * @param country
  * @returns
  */
-async function updateOne(user: ICountry): Promise<void> {
-  return countryRepo.update(user);
+async function updateOne(country: ICountry): Promise<void> {
+  return countryRepo.update(country);
 }
 
 /**
- * Delete a user by their code.
+ * Delete a country by their code.
  *
- * @param id
+ * @param code
  * @returns
  */
 async function deleteOne(code: string): Promise<void> {
