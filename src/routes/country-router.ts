@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes"
 
 import Country, { countrySchemaJOI, ICountry } from "@models/country-model"
 import countryService from "@services/country-service"
+import asyncHandler from "@shared/asyncHandler"
 import { ParamMissingError } from "@shared/errors"
 import validateJOI from "@shared/validateJOI"
 
@@ -43,38 +44,43 @@ router.get(p.getCode, (async (req: Request, res: Response) => {
 /**
  * Add one country
  */
-router.post(p.post, validateJOI(countrySchemaJOI), (async (
-  req: Request,
-  res: Response
-) => {
-  const country: ICountry = req.body;
+router.post(
+  p.post,
+  validateJOI(countrySchemaJOI),
+  asyncHandler((async (req: Request, res: Response) => {
+    const country: ICountry = req.body;
 
-  // Check params
-  if (!country.name || !country.alpha2Code || !country.alpha3Code) {
-    throw new ParamMissingError();
-  }
+    // Check params
+    if (!country.name || !country.alpha2Code || !country.alpha3Code) {
+      throw new ParamMissingError();
+    }
 
-  await countryService.addOne(country);
+    await countryService.addOne(country);
 
-  return res.status(CREATED).end();
-}) as RequestHandler);
+    return res.status(CREATED).end();
+  }) as RequestHandler)
+);
 
 /**
  * Update one country
  */
-router.put(p.update, (async (req: Request, res: Response) => {
-  const { country }: { country: ICountry } = req.body;
+router.put(
+  p.update,
+  validateJOI(countrySchemaJOI),
+  asyncHandler((async (req: Request, res: Response) => {
+    const { country }: { country: ICountry } = req.body;
 
-  // Check params
-  if (!country) {
-    throw new ParamMissingError();
-  }
+    // Check params
+    if (!country) {
+      throw new ParamMissingError();
+    }
 
-  // Update data
-  await countryService.updateOne(country);
+    // Update data
+    await countryService.updateOne(country);
 
-  return res.status(CREATED).end();
-}) as RequestHandler);
+    return res.status(CREATED).end();
+  }) as RequestHandler)
+);
 
 /**
  * Delete one country by their country code
