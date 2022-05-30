@@ -25,7 +25,10 @@ function getOne(code: string): Promise<ICountry | null> {
  * @param country
  * @returns
  */
-function addOne(country: ICountry): Promise<void> {
+async function addOne(country: ICountry): Promise<void> {
+  const persists = await countryRepo.persists(country);
+  if (persists) throw Error('Country already exist');
+
   return countryRepo.add(country);
 }
 

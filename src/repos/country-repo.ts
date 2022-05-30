@@ -13,9 +13,9 @@ async function getOne(code: string): Promise<ICountry | null> {
 }
 
 /**
- * See if a country with the given id exists.
+ * See if a country with alpha2code or alpha3code exist.
  *
- * @param id
+ * @param country
  */
 async function persists(country: ICountry): Promise<boolean> {
   const query = await Country.exists({
@@ -44,9 +44,6 @@ async function getAll(): Promise<ICountry[]> {
  * @returns
  */
 async function add(country: ICountry): Promise<void> {
-  const exist = await persists(country);
-  if (exist) throw Error('Country already exist');
-
   await Country.create(country);
 }
 
@@ -81,7 +78,7 @@ async function deleteOne(code: string): Promise<void> {
 // Export default
 export default {
   getOne,
-  // persists,
+  persists,
   getAll,
   add,
   update,
