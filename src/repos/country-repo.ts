@@ -1,6 +1,5 @@
-import mongoose from "mongoose"
-
 import { Country, ICountry } from "@models/country-model"
+import { getRandomInt } from "@shared/functions"
 
 // /**
 //  * Get one country.
@@ -39,18 +38,17 @@ async function getAll(): Promise<ICountry[]> {
   return countries;
 }
 
-// /**
-//  * Add one country.
-//  *
-//  * @param country
-//  * @returns
-//  */
-// async function add(country: ICountry): Promise<void> {
-//   const db = await orm.openDb();
-//   country.id = getRandomInt();
-//   db.countries.push(country);
-//   return orm.saveDb(db);
-// }
+/**
+ * Add one country.
+ *
+ * @param country
+ * @returns
+ */
+async function add(country: ICountry): Promise<void> {
+  country.id = getRandomInt();
+  await Country.create(country);
+  return;
+}
 
 // /**
 //  * Update a country.
@@ -89,7 +87,7 @@ export default {
   // getOne,
   // persists,
   getAll,
-  // add,
+  add,
   // update,
   // delete: deleteOne,
 } as const;

@@ -11,15 +11,15 @@ function getAll(): Promise<ICountry[]> {
   return countryRepo.getAll();
 }
 
-// /**
-//  * Add one user.
-//  *
-//  * @param user
-//  * @returns
-//  */
-// function addOne(user: ICountry): Promise<void> {
-//   return userRepo.add(user);
-// }
+/**
+ * Add one user.
+ *
+ * @param user
+ * @returns
+ */
+function addOne(country: ICountry): Promise<void> {
+  return countryRepo.add(country);
+}
 
 // /**
 //  * Update one user.
@@ -52,7 +52,7 @@ function getAll(): Promise<ICountry[]> {
 // Export default
 export default {
   getAll,
-  // addOne,
+  addOne,
   // updateOne,
   // delete: deleteOne,
 } as const;
