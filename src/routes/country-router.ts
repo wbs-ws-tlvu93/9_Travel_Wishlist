@@ -26,9 +26,24 @@ router.get(p.get, (async (_: Request, res: Response) => {
   return res.status(OK).json({ countries });
 }) as RequestHandler);
 
+/**
+ * Get one user.
+ */
+router.get(p.getCode, (async (req: Request, res: Response) => {
+  const { code } = req.params;
+
+  if (!code) {
+    throw new ParamMissingError();
+  }
+  const country = await countryService.getOne(code);
+  return res.status(OK).json({ country });
+}) as RequestHandler);
+
+/**
+ * Add one user
+ */
 router.post(p.post, (async (req: Request, res: Response) => {
   const { country }: { country: ICountry } = req.body;
-  console.log(country);
   if (!country) {
     throw new ParamMissingError();
   }

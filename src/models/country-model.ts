@@ -2,14 +2,12 @@ import mongoose, { Schema } from "mongoose"
 
 // Country schema
 export interface ICountry {
-  id: number;
   name: string;
   alpha2Code: string;
   alpha3Code: string;
 }
 
 const countrySchema = new Schema<ICountry>({
-  id: { type: Number, required: true },
   name: { type: String, required: true },
   alpha2Code: { type: String, required: true },
   alpha3Code: { type: String, required: true },
@@ -28,7 +26,6 @@ function getNew(
   alpha3Code: string
 ): ICountry {
   return {
-    id: -1,
     name,
     alpha2Code,
     alpha3Code,
@@ -43,7 +40,6 @@ function getNew(
  */
 function copy(country: ICountry): ICountry {
   return {
-    id: country.id,
     name: country.name,
     alpha2Code: country.alpha2Code,
     alpha3Code: country.alpha3Code,

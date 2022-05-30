@@ -1,4 +1,4 @@
-import Model, { ICountry } from "@models/country-model"
+import { ICountry } from "@models/country-model"
 import countryRepo from "@repos/country-repo"
 import { UserNotFoundError } from "@shared/errors"
 
@@ -12,6 +12,15 @@ function getAll(): Promise<ICountry[]> {
 }
 
 /**
+ * Get one user by id.
+ *
+ * @returns
+ */
+function getOne(code: string): Promise<ICountry | null> {
+  return countryRepo.getOne(code);
+}
+
+/**
  * Add one user.
  *
  * @param user
@@ -21,19 +30,15 @@ function addOne(country: ICountry): Promise<void> {
   return countryRepo.add(country);
 }
 
-// /**
-//  * Update one user.
-//  *
-//  * @param user
-//  * @returns
-//  */
-// async function updateOne(user: ICountry): Promise<void> {
-//   const persists = await userRepo.persists(user.id);
-//   if (!persists) {
-//     throw new UserNotFoundError();
-//   }
-//   return userRepo.update(user);
-// }
+/**
+ * Update one user.
+ *
+ * @param user
+ * @returns
+ */
+async function updateOne(user: ICountry): Promise<void> {
+  return countryRepo.update(user);
+}
 
 // /**
 //  * Delete a user by their id.
@@ -52,7 +57,8 @@ function addOne(country: ICountry): Promise<void> {
 // Export default
 export default {
   getAll,
+  getOne,
   addOne,
-  // updateOne,
+  updateOne,
   // delete: deleteOne,
 } as const;

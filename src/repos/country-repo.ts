@@ -1,15 +1,19 @@
+import mongoose from "mongoose"
+
 import { Country, ICountry } from "@models/country-model"
 import { getRandomInt } from "@shared/functions"
 
-// /**
-//  * Get one country.
-//  *
-//  * @param email
-//  * @returns
-//  */
-// async function getOne(id: string): Promise<ICountry | null> {
-//   return await Country.findById(new mongoose.Types.ObjectId(id));
-// }
+/**
+ * Get one country.
+ *
+ * @param code
+ * @returns
+ */
+async function getOne(code: string): Promise<ICountry | null> {
+  return await Country.findOne({
+    $or: [{ alpha2Code: code }, { alpha3Code: code }],
+  });
+}
 
 // /**
 //  * See if a country with the given id exists.
@@ -34,8 +38,7 @@ import { getRandomInt } from "@shared/functions"
  * @returns
  */
 async function getAll(): Promise<ICountry[]> {
-  const countries = await Country.find();
-  return countries;
+  return await Country.find();
 }
 
 /**
@@ -45,26 +48,18 @@ async function getAll(): Promise<ICountry[]> {
  * @returns
  */
 async function add(country: ICountry): Promise<void> {
-  country.id = getRandomInt();
   await Country.create(country);
-  return;
 }
 
-// /**
-//  * Update a country.
-//  *
-//  * @param country
-//  * @returns
-//  */
-// async function update(country: ICountry): Promise<void> {
-//   const db = await orm.openDb();
-//   for (let i = 0; i < db.countries.length; i++) {
-//     if (db.countries[i].id === country.id) {
-//       db.countries[i] = country;
-//       return orm.saveDb(db);
-//     }
-//   }
-// }
+/**
+ * Update a country.
+ *
+ * @param country
+ * @returns
+ */
+async function update(country: ICountry): Promise<void> {
+  await Country.findOneAndUpdate(country);
+}
 
 // /**
 //  * Delete one country.
@@ -84,10 +79,10 @@ async function add(country: ICountry): Promise<void> {
 
 // Export default
 export default {
-  // getOne,
+  getOne,
   // persists,
   getAll,
   add,
-  // update,
+  update,
   // delete: deleteOne,
 } as const;
