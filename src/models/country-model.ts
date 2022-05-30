@@ -8,9 +8,18 @@ export interface ICountry {
 }
 
 const countrySchema = new Schema<ICountry>({
-  name: { type: String, required: true },
-  alpha2Code: { type: String, required: true },
-  alpha3Code: { type: String, required: true },
+  name: {
+    type: String,
+    required: [true, 'Validation failed, name is missing'],
+  },
+  alpha2Code: {
+    type: String,
+    required: [true, 'Validation failed, alpha2Code is missing'],
+  },
+  alpha3Code: {
+    type: String,
+    required: [true, 'Validation failed, alpha3Code is missing'],
+  },
 });
 
 export const Country = mongoose.model<ICountry>('Country', countrySchema);

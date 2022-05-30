@@ -1,7 +1,4 @@
-import mongoose from "mongoose"
-
 import { Country, ICountry } from "@models/country-model"
-import { getRandomInt } from "@shared/functions"
 
 /**
  * Get one country.
@@ -15,22 +12,21 @@ async function getOne(code: string): Promise<ICountry | null> {
   });
 }
 
-// /**
-//  * See if a country with the given id exists.
-//  *
-//  * @param id
-//  */
-// async function persists(
-//   id: number,
-//   alpha2Code: string,
-//   alpha3Code: string
-// ): Promise<boolean> {
-//   const query = await Country.exists({
-//     $or: [{ id: id }, { alpha2Code: alpha2Code }, { alpha3Code: alpha3Code }],
-//   });
-//   if (query) return true;
-//   return false;
-// }
+/**
+ * See if a country with the given id exists.
+ *
+ * @param id
+ */
+async function persists(country: ICountry): Promise<boolean> {
+  const query = await Country.exists({
+    $or: [
+      { alpha2Code: country.alpha2Code },
+      { alpha3Code: country.alpha3Code },
+    ],
+  });
+  if (query) return true;
+  return false;
+}
 
 /**
  * Get all countries.
@@ -48,6 +44,9 @@ async function getAll(): Promise<ICountry[]> {
  * @returns
  */
 async function add(country: ICountry): Promise<void> {
+  const exist = await persists(country);
+  if (exist) throw Error('Country already exist');
+
   await Country.create(country);
 }
 
